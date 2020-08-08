@@ -111,7 +111,7 @@ enum4linux is used to enumerate infromation, such as Workgroup/Domain, from Wind
  Explanation of the flags used: 
 * -a: Do all simple enumeration
 Domain name of the machine found: CASCADE <br>
-![domain_name](../img/domain_name.jpg)
+![domain_name](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/domain_name.jpg)
 #### Using ldapserch 
 ldapsearch is used to enumerate for any credentials found in the ldap server. <br>
 ```command used: ldapsearch -h 10.10.10.182 -p 389 -x -b "dc=CASCADE,dc=local"```
