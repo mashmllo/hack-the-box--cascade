@@ -177,11 +177,11 @@ Since the hex encode is not the correct format for the [vnc password decrypter](
 Steps taken to decode the password: <br>
 1. convert from hex to base64 using an [online converter](https://base64.guru/converter/encode/hex).<br>
 * password in base64: a88qS25ayg8= 
-<br>
-![ouput of hash](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/encode_to_base64.jpg) <br>
+
+![ouput of hash](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/encode_to_base64.jpg) 
 2. Convert the password from base64 to plaintext and store it into a file.<br>
 ```Command: echo "a88qS25ayg8=" | base64 -d > vncpasshash ```<br>
-Now that the password is decoded into vnc hash, the [vncpassword decrypter](https://github.com/jeroennijhof/vncpwd) can now be used. <br>
+Now that the password is decoded into vnc hash, the [vncpassword decrypter](https://github.com/jeroennijhof/vncpwd) can now be used. 
 Steps to decrypt the password: <br>
 1. clone the git repository. <br>
 * ```commmand: git clone https://github.com/jeroennijhof/vncpwd.git``` <br>
@@ -189,7 +189,7 @@ Steps to decrypt the password: <br>
 * ```command: make``` <br>
 3. run the command to decrypt the hash <br> 
 * ```command: ./vncpwd ~/tst/hack-the-box--cascade/vncpasshash``` <br>
-![decrypt](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/s.smith_passwd.jpg) <br>
+![decrypt](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/s.smith_passwd.jpg)
 **credentials of s.smith = s.smith:sT333ve2**
 
 ###### Checking if s.smith is able to access the machine remotely.
@@ -228,21 +228,21 @@ Steps to enumerate the database file: <br>
 2. Attach the file using the command ``` attach "Audit.db" as db1;```
 3. Using the command ```.databases``` to look for other databases available 
 * Ouput: 
-  ![databases command](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/databases%20command.jpg) <br>
+  ![databases command](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/arksvc/databases%20command.jpg) <br>
   Based on the output, Audit.db only has a single database
 4. Using the command ``` .tables``` to find the names of the tables in the database 
 * Ouput: 
-  ![tables command](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/tables%20command.jpg) <br>
+  ![tables command](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/arksvc/tables%20command.jpg) <br>
   Based on the output, Audit.db has 3 tables namely, DeletedUserAudit, Ldap and Misc. 
 5. Ldap table is first enumerated since the credentials obtained so far uses ldap. 
 * ```command: select * from db1.Ldap;``` 
 * A set of credentials is found
 * Output: 
-  ![credentials of ArkSvc](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/credentials%20of%20Arksvc.jpg) 
+  ![credentials of ArkSvc](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/arksvc/credentials%20of%20Arksvc.jpg) 
 
 ##### Decrypting the hash 
 Using an [online decrpyter](https://dotnetfiddle.net/2RDoWz), the password is decrpyted. 
-![decryption](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/online%20decrpyter%20.jpg) 
+![decryption](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/arksvc/online%20decrpyter%20.jpg) 
 **Credentials of Arksvc = Arksvc:w3lc0meFr31nd**
 
 #### Login to Arksvc using evil-winrm 
@@ -258,8 +258,8 @@ By entering ```arksvc windows``` in google, a [webpage](https://blog.stealthbits
 
 ##### Decoding TempAdmin's password 
 Using base64, the password of TempAdmin is decoded. <br>
-``` Command: echo "YmFDVDNyMWFOMDBkbGVz" | base64 -d ``` <br>
-![decode](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/hash%20of%20TempAdmin.jpg) <br>
+``` Command: echo "YmFDVDNyMWFOMDBkbGVz" | base64 -d ``` 
+![decode](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/hash%20of%20TempAdmin.jpg) 
 **Credentials: TempAdmin:baCT3r1aN00dles**
 
 #### Login to administrator's account using evil-winrm 
@@ -270,7 +270,7 @@ Use the command, ```command: evil-winrm -i 10.10.10.182-u  Administrator -p baCT
 * -p : Specify the password  
 
 Using the command ``` type C:\Users\Administrator\Desktop\root.txt``` to obtain the root flag.
-![flag](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/root%20flag.jpg) 
+![flag](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/root%20flag.jpg) 
 
 #### additional information about exploit used
 
