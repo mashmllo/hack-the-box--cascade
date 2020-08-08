@@ -176,8 +176,9 @@ Using *cat 'VNC Install.reg'*, a password was found but it is encoded in hex.
 Since the hex encode is not the correct format for the [vnc password decrypter](https://www.raymond.cc/blog/crack-or-decrypt-vnc-server-encrypted-password/) to decrypt the password, the pasword has to be decoded into the vnc hash format. Since Kali linux is has base64 decoder installed, the vnc hash will be converted to be a base64 encode to ensure that the hash is not being altered while being transfered to a file to be decrypted. 
 Steps taken to decode the password: <br>
 1. convert from hex to base64 using an [online converter](https://base64.guru/converter/encode/hex).<br>
-* password in base64: a88qS25ayg8=
-![ouput of hash](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/s.smith/encode_to_base64.jpg) <br>
+* password in base64: a88qS25ayg8= 
+<br>
+![ouput of hash](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/encode_to_base64.jpg) <br>
 2. Convert the password from base64 to plaintext and store it into a file.<br>
 ```Command: echo "a88qS25ayg8=" | base64 -d > vncpasshash ```<br>
 Now that the password is decoded into vnc hash, the [vncpassword decrypter](https://github.com/jeroennijhof/vncpwd) can now be used. <br>
@@ -215,8 +216,8 @@ Using the command, ``` type C:\User\s.smith\Desktop\user.txt``` to obtain the us
 ### Privilege Escalation
 
 #### SMB Enumeration 
-From the previous enumeration using r.thompson account, it is shown that there was an Audit folder. <br>
-![smbclient_list](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/r.thompson/smbclient_list.jpg) <br>
+From the previous enumeration using r.thompson account, it is shown that there was an Audit folder. 
+![smbclient_list](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/r.thompson/smbclient_list.jpg) <br>
 s.smith's credentials is used to access the Audit folder. In the folder, there is another folder named DB. When listing the content of the DB folder, a file, [Audit.db](https://github.com/mashmllo/hack-the-box--cascade/blob/master/appendix/smbretrieve/Audit.db), is found. The file is retrieved and enumerated. 
 ![audit folder](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/retrieve%20db%20file%20from%20smb.jpg)
 
@@ -226,22 +227,22 @@ Steps to enumerate the database file: <br>
 1. Use the ```command: sqlite3``` to access the interactive shell of sqlite
 2. Attach the file using the command ``` attach "Audit.db" as db1;```
 3. Using the command ```.databases``` to look for other databases available 
-* Ouput: <br>
+* Ouput: 
   ![databases command](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/databases%20command.jpg) <br>
   Based on the output, Audit.db only has a single database
 4. Using the command ``` .tables``` to find the names of the tables in the database 
-* Ouput: <br>
+* Ouput: 
   ![tables command](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/tables%20command.jpg) <br>
   Based on the output, Audit.db has 3 tables namely, DeletedUserAudit, Ldap and Misc. 
 5. Ldap table is first enumerated since the credentials obtained so far uses ldap. 
 * ```command: select * from db1.Ldap;``` 
 * A set of credentials is found
-* Output: <br>
-  ![credentials of ArkSvc](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/credentials%20of%20Arksvc.jpg) <br>
+* Output: 
+  ![credentials of ArkSvc](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/credentials%20of%20Arksvc.jpg) 
 
 ##### Decrypting the hash 
-Using an [online decrpyter](https://dotnetfiddle.net/2RDoWz), the password is decrpyted. <br>
-![decryption](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/online%20decrpyter%20.jpg) <br>
+Using an [online decrpyter](https://dotnetfiddle.net/2RDoWz), the password is decrpyted. 
+![decryption](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/online%20decrpyter%20.jpg) 
 **Credentials of Arksvc = Arksvc:w3lc0meFr31nd**
 
 #### Login to Arksvc using evil-winrm 
@@ -252,7 +253,7 @@ Use the command, ```command: evil-winrm -i 10.10.10.182-u Arksvc -p w3lc0meFr31n
 * -p : Specify the password  
 
 By entering ```arksvc windows``` in google, a [webpage](https://blog.stealthbits.com/active-directory-object-recovery-recycle-bin) is shown suggesting that arksvc is a recycle bin for Active Directory to allow deleted files to be recovered easily. In the website, a command ```Get-ADObject -filter 'isdeleted -eq $true -and name -ne "Deleted Objects"' -includeDeletedObjects -property *``` is also given to allow users to return all of the deleted objects within a domain. By entering the command, user TempAdmin is found along with its encoded password. 
-![TempAdmin_hash](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/hash%20of%20TempAdmin.jpg) <br>
+![TempAdmin_hash](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/hash%20of%20TempAdmin.jpg) 
 
 
 ##### Decoding TempAdmin's password 
@@ -269,7 +270,7 @@ Use the command, ```command: evil-winrm -i 10.10.10.182-u  Administrator -p baCT
 * -p : Specify the password  
 
 Using the command ``` type C:\Users\Administrator\Desktop\root.txt``` to obtain the root flag.
-![flag](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/root%20flag.jpg) <br>
+![flag](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/root%20flag.jpg) 
 
 #### additional information about exploit used
 
