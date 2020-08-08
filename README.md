@@ -120,7 +120,7 @@ ldapsearch is used to enumerate for any credentials found in the ldap server. <b
 * -p : Specify the TCP port where the ldap server is listening.
 * -x : Use simple authentication instead of SASL.
 * -b : Use searchbase as the starting point for the search instead of the default.
-<br>![ldap_result](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/ldapsearch_result.jpg)<br>
+<br>![ldap_result](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/ldapsearch_result.jpg)<br>
 A username and password is found. However, the password is base64 encoded.
     - username: r.thompson 
     - password in base64: clk0bjVldmE=
@@ -140,7 +140,7 @@ Start by listing the shared folders view the shared folder of victim's machine. 
 * -L : List all the folders in the server
 * -U : Set the SMB username 
 <br>Output:
-![smbclient_list](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/r.thompson/smbclient_list.jpg)
+![smbclient_list](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/r.thompson/smbclient_list.jpg)
 <br>
 There are a couple of folders being shared but let's start with the Data folder.
 
@@ -150,9 +150,9 @@ Logging in to r.thompson account to enumerate for credentials to compromise the 
  <br>Explanation of the flags used: 
 * -h : Specify the host on which the ldap server is running
 * -U : Set the SMB username 
-![r.thompson_smb](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/r.thompson/smbclient_login_to_data_and_cd_to_IT.jpg)
+![r.thompson_smb](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/r.thompson/smbclient_login_to_data_and_cd_to_IT.jpg)
 command: ```mget *``` is used to retrieve every file in the IT folder for enumeration. Once the files are retrieved, they will be enumerated starting from the folder that was modified most recently.
-![retrieving files](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/r.thompson/smbclient_mget_all_folder.jpg)
+![retrieving files](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/r.thompson/smbclient_mget_all_folder.jpg)
 
 ##### Enumerating Logs folder 
 There are 2 folders in the folder. <br>
