@@ -157,19 +157,19 @@ command: ```mget *``` is used to retrieve every file in the IT folder for enumer
 ##### Enumerating Logs folder 
 There are 2 folders in the folder. <br>
 1. Ark AD Recycle bin<br>
-* There is a [log file](https://github.com/mashmllo/hack-the-box--cascade/tree/master/appendix/smbretrieve/Logs/Ark%20AD%20Recycle%20Bin/ArkAdRecycleBin.log) in this folder and another user is found. <br>
+* There is a [log file](https://github.com/mashmllo/hack-the-box--cascade/blob/master/appendix/smbretrieve/Logs/Ark%20AD%20Recycle%20Bin/ArkAdRecycleBin.log) in this folder and another user is found. <br>
 **username: ArkSvc** <br>
 2. Dcs <br>
-* Another log file is found but there is no credentails in the [log file.](https://github.com/mashmllo/hack-the-box--cascade/tree/master/appendix/smbretrieve/Logs/DCs/dcdiag.log)
+* Another log file is found but there is no credentails in the [log file.](https://github.com/mashmllo/hack-the-box--cascade/blob/master/appendix/smbretrieve/Logs/DCs/dcdiag.log)
 
 ##### Enumerating Temp folder
 The Temp folder is enumerated next. Using the command *ls*, another user is found. 
-![s.smith user found](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/s.smith/second_user.jpg)
+![s.smith user found](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/second_user.jpg)
 
 ##### Enumerating s.smith folder in Temp file
 A file, [VNC Install.reg](https://github.com/mashmllo/hack-the-box--cascade/tree/master/appendix/smbretrieve/Temp/s.smith/VNC%20Install.reg), was found. 
 Using *cat 'VNC Install.reg'*, a password was found but it is encoded in hex. 
-![hex_encoded_pass](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/s.smith/found_pass_in_hex.jpg)
+![hex_encoded_pass](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/found_pass_in_hex.jpg)
 * password in hex: 6b,cf,2a,4b,6e,5a,ca,0f
 
 ###### Obtaining the vnc password
@@ -188,12 +188,12 @@ Steps to decrypt the password: <br>
 * ```command: make``` <br>
 3. run the command to decrypt the hash <br> 
 * ```command: ./vncpwd ~/tst/hack-the-box--cascade/vncpasshash``` <br>
-![decrypt](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/s.smith/s.smith_passwd.jpg) <br>
+![decrypt](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/s.smith_passwd.jpg) <br>
 **credentials of s.smith = s.smith:sT333ve2**
 
 ###### Checking if s.smith is able to access the machine remotely.
 Going back to ldapsearch scan, it is shown that s.smith is able to access to machine remotely. 
-![remote management](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/s.smith/s.smith_ldap.jpg)
+![remote management](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/s.smith_ldap.jpg)
 
 ### Obtaining user flag
 
@@ -207,18 +207,18 @@ Once evil-winrm is downloaded, ``` command: evil-winrm -i 10.10.10.182 -u s.smit
 * -i : Specify the Remote ip 
 * -u : Specify the username
 * -p : Specify the password  
-<br> ![evil-winrm](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/s.smith/evil-winrm_exploit%20.jpg)
+<br> ![evil-winrm](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/evil-winrm_exploit%20.jpg)
 
 ##### Obtaining the user flag 
 Using the command, ``` type C:\User\s.smith\Desktop\user.txt``` to obtain the user flag. <br>
-![flag](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/s.smith/user_flag.jpg)
+![flag](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/user_flag.jpg)
 ### Privilege Escalation
 
 #### SMB Enumeration 
 From the previous enumeration using r.thompson account, it is shown that there was an Audit folder. <br>
 ![smbclient_list](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/r.thompson/smbclient_list.jpg) <br>
-s.smith's credentials is used to access the Audit folder. In the folder, there is another folder named DB. When listing the content of the DB folder, a file, [Audit.db](https://github.com/mashmllo/hack-the-box--cascade/tree/master/appendix/smbretrieve/Audit.db), is found. The file is retrieved and enumerated. 
-![audit folder](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/user/s.smith/retrieve%20db%20file%20from%20smb.jpg)
+s.smith's credentials is used to access the Audit folder. In the folder, there is another folder named DB. When listing the content of the DB folder, a file, [Audit.db](https://github.com/mashmllo/hack-the-box--cascade/blob/master/appendix/smbretrieve/Audit.db), is found. The file is retrieved and enumerated. 
+![audit folder](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/user/s.smith/retrieve%20db%20file%20from%20smb.jpg)
 
 #### Audit.db enumeration 
 Based on the .dll files in the audit folder, it is likely that Audit.db uses sqlite as its database. Therefore, sqlite3 is used. <br>
@@ -227,21 +227,21 @@ Steps to enumerate the database file: <br>
 2. Attach the file using the command ``` attach "Audit.db" as db1;```
 3. Using the command ```.databases``` to look for other databases available 
 * Ouput: <br>
-  ![databases command](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEs/arksvc/databases%20command.jpg) <br>
+  ![databases command](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/databases%20command.jpg) <br>
   Based on the output, Audit.db only has a single database
 4. Using the command ``` .tables``` to find the names of the tables in the database 
 * Ouput: <br>
-  ![tables command](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEs/arksvc/tables%20command.jpg) <br>
+  ![tables command](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/tables%20command.jpg) <br>
   Based on the output, Audit.db has 3 tables namely, DeletedUserAudit, Ldap and Misc. 
 5. Ldap table is first enumerated since the credentials obtained so far uses ldap. 
 * ```command: select * from db1.Ldap;``` 
 * A set of credentials is found
 * Output: <br>
-  ![credentials of ArkSvc](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEs/arksvc/credentials%20of%20Arksvc.jpg) <br>
+  ![credentials of ArkSvc](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/credentials%20of%20Arksvc.jpg) <br>
 
 ##### Decrypting the hash 
 Using an [online decrpyter](https://dotnetfiddle.net/2RDoWz), the password is decrpyted. <br>
-![decryption](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEs/arksvc/online%20decrpyter%20.jpg) <br>
+![decryption](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/arksvc/online%20decrpyter%20.jpg) <br>
 **Credentials of Arksvc = Arksvc:w3lc0meFr31nd**
 
 #### Login to Arksvc using evil-winrm 
@@ -252,13 +252,13 @@ Use the command, ```command: evil-winrm -i 10.10.10.182-u Arksvc -p w3lc0meFr31n
 * -p : Specify the password  
 
 By entering ```arksvc windows``` in google, a [webpage](https://blog.stealthbits.com/active-directory-object-recovery-recycle-bin) is shown suggesting that arksvc is a recycle bin for Active Directory to allow deleted files to be recovered easily. In the website, a command ```Get-ADObject -filter 'isdeleted -eq $true -and name -ne "Deleted Objects"' -includeDeletedObjects -property *``` is also given to allow users to return all of the deleted objects within a domain. By entering the command, user TempAdmin is found along with its encoded password. 
-![TempAdmin_hash](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEs/hash%20of%20TempAdmin.jpg) <br>
+![TempAdmin_hash](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/hash%20of%20TempAdmin.jpg) <br>
 
 
 ##### Decoding TempAdmin's password 
 Using base64, the password of TempAdmin is decoded. <br>
 ``` Command: echo "YmFDVDNyMWFOMDBkbGVz" | base64 -d ``` <br>
-![decode](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEs/hash%20of%20TempAdmin.jpg) <br>
+![decode](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/hash%20of%20TempAdmin.jpg) <br>
 **Credentials: TempAdmin:baCT3r1aN00dles**
 
 #### Login to administrator's account using evil-winrm 
@@ -269,7 +269,7 @@ Use the command, ```command: evil-winrm -i 10.10.10.182-u  Administrator -p baCT
 * -p : Specify the password  
 
 Using the command ``` type C:\Users\Administrator\Desktop\root.txt``` to obtain the root flag.
-![flag](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEs/root%20flag.jpg) <br>
+![flag](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/root%20flag.jpg) <br>
 
 #### additional information about exploit used
 
