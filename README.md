@@ -227,17 +227,17 @@ Steps to enumerate the database file: <br>
 1. Use the ```command: sqlite3``` to access the interactive shell of sqlite
 2. Attach the file using the command ``` attach "Audit.db" as db1;```
 3. Using the command ```.databases``` to look for other databases available 
-* Ouput: 
+* Ouput: <br>
   ![databases command](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/arksvc/databases%20command.jpg) <br>
   Based on the output, Audit.db only has a single database
 4. Using the command ``` .tables``` to find the names of the tables in the database 
-* Ouput: 
+* Ouput: <br>
   ![tables command](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/arksvc/tables%20command.jpg) <br>
   Based on the output, Audit.db has 3 tables namely, DeletedUserAudit, Ldap and Misc. 
 5. Ldap table is first enumerated since the credentials obtained so far uses ldap. 
 * ```command: select * from db1.Ldap;``` 
 * A set of credentials is found
-* Output: 
+* Output: <br>
   ![credentials of ArkSvc](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/arksvc/credentials%20of%20Arksvc.jpg) 
 
 ##### Decrypting the hash 
@@ -259,7 +259,7 @@ By entering ```arksvc windows``` in google, a [webpage](https://blog.stealthbits
 ##### Decoding TempAdmin's password 
 Using base64, the password of TempAdmin is decoded. <br>
 ``` Command: echo "YmFDVDNyMWFOMDBkbGVz" | base64 -d ``` 
-![decode](https://github.com/mashmllo/hack-the-box--cascade/tree/master/img/PrivEsc/hash%20of%20TempAdmin.jpg) 
+![decode](https://github.com/mashmllo/hack-the-box--cascade/blob/master/img/PrivEsc/hash%20of%20TempAdmin.jpg)
 **Credentials: TempAdmin:baCT3r1aN00dles**
 
 #### Login to administrator's account using evil-winrm 
