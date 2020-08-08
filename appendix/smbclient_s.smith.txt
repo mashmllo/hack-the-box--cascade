@@ -1,0 +1,35 @@
+root@kali-linux:~/tst/hack-the-box--cascade# smbclient -U "s.smith" \\\\10.10.10.182\\Audit$
+Enter WORKGROUP\s.smith's password: 
+Try "help" to get a list of possible commands.
+smb: \> ls 
+  .                                   D        0  Thu Jan 30 02:01:26 2020
+  ..                                  D        0  Thu Jan 30 02:01:26 2020
+  CascAudit.exe                       A    13312  Wed Jan 29 05:46:51 2020
+  CascCrypto.dll                      A    12288  Thu Jan 30 02:00:20 2020
+  DB                                  D        0  Wed Jan 29 05:40:59 2020
+  RunAudit.bat                        A       45  Wed Jan 29 07:29:47 2020
+  System.Data.SQLite.dll              A   363520  Sun Oct 27 14:38:36 2019
+  System.Data.SQLite.EF6.dll          A   186880  Sun Oct 27 14:38:38 2019
+  x64                                 D        0  Mon Jan 27 06:25:27 2020
+  x86                                 D        0  Mon Jan 27 06:25:27 2020
+
+		13106687 blocks of size 4096. 7792833 blocks available
+smb: \> cd DB
+smb: \DB\> ls
+  .                                   D        0  Wed Jan 29 05:40:59 2020
+  ..                                  D        0  Wed Jan 29 05:40:59 2020
+  Audit.db                            A    24576  Wed Jan 29 05:39:24 2020
+
+		13106687 blocks of size 4096. 7792833 blocks available
+smb: \DB\> mget Audit.db
+\Get file Audit.db? 
+smb: \DB\> mget Audit.db
+Get file Audit.db? 
+smb: \DB\> mget *
+Get file Audit.db? 
+smb: \DB\> recurse ON 
+smb: \DB\> PROMPT OFF
+smb: \DB\> mget *
+getting file \DB\Audit.db of size 24576 as Audit.db (17.4 KiloBytes/sec) (average 17.4 KiloBytes/sec)
+smb: \DB\> SMBecho failed (NT_STATUS_CONNECTION_RESET). The connection is disconnected now
+
